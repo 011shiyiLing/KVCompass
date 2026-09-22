@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.so
+build/
+results*/
+*.log
+.DS_Store
+simulation/datasets/*.jsonl

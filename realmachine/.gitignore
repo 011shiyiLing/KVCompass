@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# Compiled C/C++ extension
+*.so
+*.o
+*.a
+build/
+src/ludo/ludo_binding.*.so
+src/ludo/build/
+
+# Logs & results
+logs/
+*.log
+
+# results/: keep PDFs, table_summary.csv, and per-cell CSVs in git
+# (~400 KB each × 24 files ≈ 10 MB total — small enough to track and
+# useful for re-plotting without re-running the sweep).
+results/*.json
+*.json.tmp
+
+# Datasets — keep out of git, rsync separately
+datasets/
+*.jsonl
+*.arrow
+
+# HuggingFace cache (in case someone sets HF_HOME to the repo root)
+.cache/
+hf_cache/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local settings
+.env
+.envrc
+local_settings.py
+
+# Python virtual environments (per-machine, don't commit)
+.venv/
+venv/
+
+# Local one-off result directories from intermediate experiments
+results_smoke*/
+results_fix_*/
+results_planA/
+results_pre_fix_*/
+
+# Spaces saved for backup CSVs that should never be re-committed
+*.preplanA
+scripts/aws/hosts.env
+scripts/vast/hosts.env

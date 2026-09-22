@@ -1,0 +1,24 @@
+KVCompass — external dependency pins
+====================================
+Vendored dependencies live under realmachine/deps/. Everything else in this
+repository is our own code.
+
+--- realmachine / deps ---
+smash             b07c97fa722730691af0f511d45add2b284f48cb   [materialized]
+                  (Ludo hashing: ControlPlaneLudo / DataPlaneLudo, Othello,
+                   cuckoo — the discovery-index structure the paper builds on)
+ludo              [materialized]  (reference Ludo repository)
+PlanetServe       ffec67400bc689cce2869ba2ed4c2801d8050d3f   (SHA pin only)
+
+The simulation has no vendored dependencies. Baseline schemes (Central
+Directory, Consistent Hash, Chord, PlanetServe radix tree, SkyWalker,
+Dynamo) are modeled directly in simulation/simulate.py.
+Upstream references consulted for the baselines, pinned by commit:
+CacheGen          6bed34ca9d495289955ed754cf2ad0c43346ee48
+DualMap           2d16a0e807f3c55b71f7f52966d909270d2e3b7d
+LMCache           06981d6a31e9564181e63d151d021895809bbf8d
+Mooncake          5ff565dcabf47e147859be3839459b355cddc373
+planetserve       bfe505a6f2f186ac8b06e5268cfc3d6e6d5b5f73
+preble            1a35eae20c416f7062ca81775aab72890323fd97
+sglang            eb6bcc5c868248b64c613b0a0d2b43d45dde39bc
+vllm              2409b95415e94d43c1d7eee6e2a8e395055f63b1

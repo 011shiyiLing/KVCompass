@@ -1,0 +1,23 @@
+# Core inference / tokeniser
+torch>=2.0.0
+transformers>=4.38.0
+accelerate>=0.27.0
+
+# HTTP server (Ludo router) / client
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+httpx>=0.26.0
+aiohttp>=3.9.0
+
+# Numeric
+numpy>=1.24.0
+
+# pybind11 (to build the Ludo C++ extension — see scripts/build_ludo.sh)
+pybind11>=2.11.0
+setuptools>=68.0.0
+
+# Note: sglang itself is NOT in this requirements file on purpose.
+# Install it per-machine to match the CUDA version of the host.
+# On vast.ai "SGLang" template it is pre-installed.
+# Elsewhere:
+#   pip install "sglang[all]"==<version-matching-your-cuda>

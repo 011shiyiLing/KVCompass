@@ -1,0 +1,16 @@
+# Core inference
+torch>=2.0.0
+transformers>=4.38.0
+accelerate>=0.27.0
+
+# HTTP server / client
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+httpx>=0.26.0
+
+# Numeric
+numpy>=1.24.0
+
+# pybind11 (needed to build the Ludo C++ extension)
+pybind11>=2.11.0
+setuptools>=68.0.0
