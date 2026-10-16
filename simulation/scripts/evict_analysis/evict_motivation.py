@@ -36,7 +36,11 @@ import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / 'datasets'
-FIGD = ROOT / 'figures'
+FIGD = ROOT / 'results'
+FIGD.mkdir(exist_ok=True)
+
+# Policy display names (shared by the figure and the printed tables).
+PL = {'lru': 'LRU', 'lfu': 'LFU', 'fifo': 'FIFO', 'wa': 'WA'}
 
 CHUNK_SIZES = [128, 256, 512, 1024, 2048, 4096]
 BUDGET      = (32 * 1024 ** 3) // (2 * 32 * 8 * 128 * 2)   # NODE_VRAM_TOKENS = 262144
@@ -257,7 +261,6 @@ def plot_figure(results, wnames):
     PE = {'lru': '#5A7E9E', 'lfu': '#9E5A5A', 'fifo': '#6E8A69',
           'wa': '#7E6FA0'}
     PH = {'lru': '//', 'lfu': '--', 'fifo': '\\\\', 'wa': 'xx'}
-    PL = {'lru': 'LRU', 'lfu': 'LFU', 'fifo': 'FIFO', 'wa': 'WA'}
     x = np.arange(len(wnames))
     bw = 0.19
     fig, ax = plt.subplots(figsize=(3.35, 2.2))

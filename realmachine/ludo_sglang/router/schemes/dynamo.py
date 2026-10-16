@@ -205,6 +205,13 @@ class DynamoScheme(Scheme):
                 if ml > pool.get(rank, (0, TIER_NONE))[0]:
                     pool[rank] = (ml, tier)
 
+        # A request from a region with no local worker and no remote index
+        # hit would otherwise leave the pool empty; fall back to the
+        # globally least-loaded worker (what the other schemes do).
+        if not pool:
+            global_ll = min(range(self.n_workers), key=lambda r: q_view[r])
+            pool[global_ll] = (0, TIER_NONE)
+
         # Joint T_q_view + T_p + T_t over the candidate pool.
         best_rank, best_score, best_ml = None, float("inf"), 0
         for rank, (ml, tier) in pool.items():

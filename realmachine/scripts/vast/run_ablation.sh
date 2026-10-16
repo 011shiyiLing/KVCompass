@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────────────────────
-# run_ablation.sh — P0 ablation grid for the SIGMETRICS supplement.
+# run_ablation.sh — ablation grid (one mechanism removed per config).
 #
 # Configs (each removes ONE mechanism from the full system):
 #   A0 full          — no change

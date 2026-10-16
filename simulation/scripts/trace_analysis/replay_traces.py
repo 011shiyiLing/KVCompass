@@ -4,9 +4,9 @@
 The traces carry real prefix-sharing structure (block hash_ids) and real
 arrival times but NO geography.  Each root session is assigned a home
 metro drawn from the simulator's 16-NA-metro demand distribution
-(simulate.py REGION_REQUEST_WEIGHTS = MSA population); follow-up turns
+(MSA-population weights, hardcoded below); follow-up turns
 inherit the root's metro.  The replay then mirrors
-scripts/wildchat_analysis/extract_na16.py exactly:
+extract_na16.py (same directory) exactly:
 
   remote-only : at arrival, the K-token prefix was computed before, but
                 only by requests served in OTHER metros;

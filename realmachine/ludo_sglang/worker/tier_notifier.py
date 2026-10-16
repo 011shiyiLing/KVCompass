@@ -160,8 +160,16 @@ def _init_once() -> bool:
     elif router_env:
         _MODE = "gossip"
         _router_url = router_env.rstrip("/")
-        _log.info("tier-notifier (gossip): → %s (timeout=%.2fs)",
-                  _router_url, _timeout_s)
+        # Gossip mode needs the GLOBAL dp rank too: the router's
+        # /internal/tier_event rejects rank < 0 (2026-08-26 fix — the
+        # Vast fleet never delivered a single tier event before this).
+        _my_rank = int(os.environ.get("LUDO_WORKER_RANK", "-1"))
+        if _my_rank < 0:
+            _log.error("LUDO_WORKER_RANK unset; gossip-mode tier notifier "
+                       "disabled.")
+            return False
+        _log.info("tier-notifier (gossip): → %s rank=%d (timeout=%.2fs)",
+                  _router_url, _my_rank, _timeout_s)
     else:
         _log.info("Neither LUDO_AUTHORITY_URLS nor LUDO_ROUTER_URL set; "
                   "tier-notifier disabled (no-op).")

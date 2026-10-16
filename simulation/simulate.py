@@ -1,18 +1,25 @@
 """
-simulate.py — Core simulation framework for Section 3 (Figures 1-4).
+simulate.py — Core simulation framework for the large-scale evaluation.
 
 Implements a trace-driven, event-based simulation of an internet-scale
 KV cache discovery plane for LLM serving. No actual GPU inference is run;
-serving nodes are modeled by cost functions derived from Llama-3.1-8B on A100.
+serving nodes are modeled by cost functions derived from Llama-3.1-8B on A100
+(or 70B with SIM_MODEL=70b).
 
-Routing schemes implemented:
-  ludo            — multi-level Ludo table (ours)
-  random_ll       — random / least-loaded (no cache awareness)
-  consistent_hash — static hash-ring affinity
-  kademlia        — DHT with hash-placement (no migration)
-  centralized     — perfect centralized tracker
-  radix_tree      — PlanetServe-style single-level index
-  oracle          — omniscient upper bound
+Routing schemes implemented (run_section3.py's default figure set runs the
+starred ones):
+  ludo             — multi-level Ludo table (ours) *
+  ludo_coarse      — ludo with the coarse chunk grid (ablation baseline) *
+  central_directory— centralized coordinator paying a WAN RTT per lookup *
+  radix_tree       — PlanetServe-style single-level index *
+  consistent_hash  — static hash-ring affinity *
+  chord            — multi-hop DHT lookup *
+  skywalker        — per-region LBs with stale-view selective pushing *
+  dynamo           — per-region cache-aware routers, periodic broadcast *
+  random_ll        — random / least-loaded (no cache awareness)
+  kademlia         — DHT with hash placement (no migration)
+  centralized      — perfect zero-latency centralized tracker
+  oracle           — omniscient upper bound
 """
 
 import bisect
@@ -122,8 +129,7 @@ SGLANG_CHUNK_TOKENS = 8192
 #   8b : 32 layers → 131,072 B = 128 KB/token.
 #   70b: 80 layers → 327,680 B = 320 KB/token.
 # (Pre-Oct-2025 versions of this file erroneously used 512 B, which made the
-# per-node cache capacity and the PCIe reload cost off by 256× — see
-# 03_evaluation.md §1.4 for the corrected derivation.)
+# per-node cache capacity and the PCIe reload cost off by 256×.)
 _N_LAYERS          = 32 if SIM_MODEL == '8b' else 80
 KV_BYTES_PER_TOKEN = 2 * _N_LAYERS * 8 * 128 * 2
 
@@ -1777,7 +1783,7 @@ class LudoDiscovery(DiscoveryPlane):
 class DynamoDiscovery(DiscoveryPlane):
     """NVIDIA-Dynamo-style KV-cache-aware router, hierarchical across clusters.
 
-    Reviewer strawman.  Each cluster (region) keeps an *accurate* per-cluster
+    Baseline.  Each cluster (region) keeps an *accurate* per-cluster
     index of which local replica holds which prefix, kept in sync with the
     real caches via advertise/invalidate — exactly like Dynamo's KvIndexer fed
     by worker KV-cache events.  A request first consults its local cluster
@@ -2637,11 +2643,13 @@ class OracleDiscovery(DiscoveryPlane):
     def reset(self):
         self.index = defaultdict(dict)
 
-    def lookup(self, prefix_id, prefix_len, request_region=0):
+    def lookup(self, prefix_id, prefix_len, request_region=0,
+               content_keys=None):
         return [(nid, min(cl, prefix_len), tier)
                 for nid, (cl, tier) in self.index.get(prefix_id, {}).items()]
 
-    def advertise(self, node_id, region_id, prefix_id, cached_len, tier='VRAM'):
+    def advertise(self, node_id, region_id, prefix_id, cached_len, tier='VRAM',
+                  content_keys=None, radix_path=None):
         self.index[prefix_id][node_id] = (cached_len, tier)
 
     def invalidate(self, node_id, prefix_id):

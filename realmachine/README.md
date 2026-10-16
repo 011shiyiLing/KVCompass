@@ -45,6 +45,7 @@ scripts/
   experiment/              # sglang_fleet.sh, discovery_fleet.sh, run_experiment*.sh
   vast/                    # vast.ai fleet drivers (testbed used in the paper)
   aws/                     # AWS multi-region drivers
+  plotting/                # plot_fig1_fig2.py, plot_eval_grid.py (result CSVs → figures)
 ```
 
 `router/MULTI_EDGE_DEPLOY.md` and `worker/SGLANG_TIER_PATCH.md` document the
@@ -86,9 +87,17 @@ and routers, replay the workload, and collect per-scheme results.
 # §5.5 — operation latency/throughput microbenchmarks
 cd experiments/p1_micro && ./build.sh && ./p1_bench
 
-# §6.1 — memory footprint vs entries and levels
+# §6.1 — memory footprint vs entries and levels.
+# Needs a token dump first: experiments/p2_mem/export_tokens.py turns a
+# replayed trace into results_tmp/p2_tokens.bin (see the script headers).
 cd experiments/p2_mem && ./run_p2_full.sh
 
-# §6.3 — false-hit rate: microbenchmark and end-to-end lookup effect
-cd experiments/p3_falsehit && python3 fp_microbench.py && python3 e2e_false_lookup.py
+# §6.3 — false-hit rate microbenchmark (standalone)
+cd experiments/p3_falsehit && python3 fp_microbench.py
+# e2e_false_lookup.py quantifies the end-to-end effect from testbed
+# result logs: python3 e2e_false_lookup.py <results_dir> ...
 ```
+
+After a testbed run, `scripts/plotting/plot_fig1_fig2.py --results-dir <dir>`
+renders the per-scheme latency figures and `scripts/plotting/plot_eval_grid.py`
+the combined grid.

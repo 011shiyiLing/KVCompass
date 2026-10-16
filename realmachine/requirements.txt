@@ -9,10 +9,12 @@ uvicorn[standard]>=0.27.0
 httpx>=0.26.0
 aiohttp>=3.9.0
 
-# Numeric
+# Numeric / result plotting (scripts/plotting)
 numpy>=1.24.0
+pandas>=2.0.0
+matplotlib>=3.7.0
 
-# pybind11 (to build the Ludo C++ extension — see scripts/build_ludo.sh)
+# pybind11 (to build the Ludo C++ extension — see scripts/setup/build_ludo.sh)
 pybind11>=2.11.0
 setuptools>=68.0.0
 

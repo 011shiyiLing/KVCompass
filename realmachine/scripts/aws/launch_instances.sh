@@ -3,7 +3,7 @@
 # launch_instances.sh — launch the 3-region testbed with the AWS CLI.
 #
 # Prereqs: `aws configure` done (IAM user with EC2 full access), quotas
-# granted (see MULTIREGION_SETUP.md §1), and an SSH public key at
+# granted, and an SSH public key at
 # $PUBKEY (default ~/.ssh/id_ed25519.pub — imported into every region).
 #
 #   bash scripts/aws/launch_instances.sh            # launch everything

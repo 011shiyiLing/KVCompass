@@ -26,6 +26,7 @@ if command -v brew >/dev/null 2>&1; then
 fi
 OUT="${OUT:-$ROOT/results_tmp/p2_mem_scale.csv}"
 TOKENS="${TOKENS:-$ROOT/results_tmp/p2_tokens.bin}"
+mkdir -p "$(dirname "$OUT")"
 MEM_CAP="${MEM_CAP:-13}"
 B="$HERE/p2_mem"
 

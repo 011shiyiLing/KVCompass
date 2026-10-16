@@ -606,7 +606,7 @@ def _ingest_topology(m: DiscoveryAuthority, body: dict) -> None:
             # No running loop (shouldn't happen in production paths) —
             # skip bootstrap; the newcomer will eventually be brought up
             # to date by the next authority rebuild snapshot or by anti-
-            # entropy (缺口 2(b), not yet implemented).
+            # entropy (planned; not yet implemented).
             _log.warning("no running loop; skipping bootstrap for %s", newcomers)
 
 

@@ -8,7 +8,10 @@ smash             b07c97fa722730691af0f511d45add2b284f48cb   [materialized]
                   (Ludo hashing: ControlPlaneLudo / DataPlaneLudo, Othello,
                    cuckoo — the discovery-index structure the paper builds on)
 ludo              [materialized]  (reference Ludo repository)
-PlanetServe       ffec67400bc689cce2869ba2ed4c2801d8050d3f   (SHA pin only)
+PlanetServe       ffec67400bc689cce2869ba2ed4c2801d8050d3f
+                  (SHA pin only — not materialized; the baseline was modeled
+                   against this commit. A second, older consultation pin of
+                   the same upstream appears in the baseline list below.)
 
 The simulation has no vendored dependencies. Baseline schemes (Central
 Directory, Consistent Hash, Chord, PlanetServe radix tree, SkyWalker,

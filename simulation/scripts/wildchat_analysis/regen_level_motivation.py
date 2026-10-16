@@ -43,7 +43,8 @@ from simulate import (                                    # type: ignore
 
 CP      = C_PREFILL_MS_PER_TOKEN
 CAP     = LUDO_MAX_CUT                       # 4096 — same cap for every scheme
-FIGDIR  = ROOT / 'figures'
+FIGDIR  = ROOT / 'results'
+FIGDIR.mkdir(exist_ok=True)
 WC_PATH = ROOT / 'datasets' / 'wildchat.jsonl'
 
 # ─── Reuse-length distribution from the WildChat multi-turn trace ────────────

@@ -161,9 +161,7 @@ the same to within `±` the gossip in-flight window.
 
 ### LWW semantics
 
-The internal unit tests in `src/ludo/ludo_table.py` (run by hand from
-the repo root with `python -c '...'` or wrap them in pytest if you
-prefer) cover:
+The LWW register in `src/ludo/ludo_table.py` guarantees:
 
 * duplicate gossip is idempotent
 * out-of-order delivery converges

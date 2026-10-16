@@ -96,7 +96,7 @@ class TierEventMsg(TypedDict):
 
 class ApplyPackedMsg(TypedDict):
     """Pre-Step-4 wire format (legacy): kept so the existing
-    ``/internal/apply_packed`` endpoint continues to work in single-mode
+    ``/internal/apply_delta_batch`` endpoint continues to work in single-mode
     deployments that haven't migrated to the Delta protocol yet."""
     level:        int
     key:          int

@@ -95,9 +95,9 @@ python3 run_section3.py --quick --workload mixed
 ```
 
 This sweeps arrival rates over all routing schemes and writes
-`fig1_latency_throughput.pdf`, `fig2_ttft_cdf.pdf`, `fig3_flops_saved.pdf`,
-and `fig4_heatmap.pdf` to `simulation/results/`. Drop `--quick` for the
-paper-scale run.
+`fig1_latency_throughput.pdf`, `fig2_ttft_cdf.pdf` (plus e2e/TBT CDF and box
+variants), `fig3b_cache_hit_rate.pdf`, and `fig4_heatmap.pdf` to
+`simulation/results/`. Drop `--quick` for the paper-scale run.
 
 To bring up the real-machine prototype on a GPU fleet, start from
 [`realmachine/README.md`](realmachine/README.md).
@@ -115,8 +115,7 @@ To bring up the real-machine prototype on a GPU fleet, start from
 | §5.5 | Index operation microbenchmarks | `realmachine/experiments/p1_micro/build.sh && ./p1_bench` |
 | §6.1 | Discovery-index memory footprint | `realmachine/experiments/p2_mem/run_p2_full.sh` |
 | §6.2 | Robustness to WAN jitter and update loss/delay | same simulation driver with `SIM_WAN_JITTER` / `SIM_UPDATE_LOSS` / `SIM_UPDATE_DELAY_MS` |
-| §6.3 | False hits in the keyless index | `realmachine/experiments/p3_falsehit/` (`fp_microbench.py`, `e2e_false_lookup.py`) |
-| Appendix | 16-region / 128-worker simulation | same driver with the 16-region configuration in `simulate.py` |
+| §6.3 | False hits in the keyless index | `realmachine/experiments/p3_falsehit/fp_microbench.py` (standalone); `e2e_false_lookup.py` analyzes testbed result logs |
 | Appendix | Production-trace replay (Bailian/Mooncake) | `simulation/scripts/trace_analysis/replay_traces.py` |
 
 ## 🙏 Acknowledgements

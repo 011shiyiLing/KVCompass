@@ -1,36 +1,15 @@
-# fig2 CDF cache files — 500 K TTFT values × 6 schemes is ~100 MB/file,
-# exceeds GitHub's single-file limit.  Regenerable via `python3
-# run_section3.py --figs 2 --n-tenants N`; kept locally for fast re-plot
-# but not tracked in git.
-# Covers both the 8B (section3_sim/) and the Qwen-2.5-14B (section3_sim_qwen14b/)
-# result directories and any future model-variant subdirectories.
-evaluation/**/fig2_cdf_*.json
-
 # Python cruft
 __pycache__/
 *.pyc
 *.pyo
 
-# Datasets — multi-GB jsonl traces, too large for GitHub. Regenerate with the
-# scripts in datasets/ (download_*.py, prep_large_dataset.py).
-datasets/
+# Datasets — multi-GB jsonl traces, too large for GitHub.
+# datasets/README.md (tracked) explains how to obtain each file.
+datasets/*.jsonl
+
+# Simulation outputs (figures + JSON caches)
+results/
+results_*/
 
 # macOS / editor cruft
 .DS_Store
-
-# LaTeX build artifacts (kept-on-disk PDFs are tracked deliberately)
-*.aux
-*.log
-*.fls
-*.fdb_latexmk
-*.out
-*.synctex.gz
-*.blg
-
-# Runtime logs
-logs/
-
-# Reference papers dropped at the repo root (PlanetServe, SkyWalker,
-# UniCache, d-HNSW, Smash, ...) — reading copies, not project artifacts.
-# Root-level only: figures/ and paper/ PDFs stay tracked.
-/*.pdf

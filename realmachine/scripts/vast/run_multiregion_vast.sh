@@ -9,7 +9,7 @@
 #     remote regions via the boxes' public port mappings;
 #   * SSH goes to one box per region (root@IP -p SSH_PORT).
 #
-# Prereqs (see MULTIREGION_SETUP.md §Vast):
+# Prereqs:
 #   1. scripts/vast/hosts.env filled in;  2. repo rsynced to every box;
 #   3. setup_box.sh install + start done on every box;
 #   4. wan matrix measured (measure_wan_tcp.py) and pushed to every box;

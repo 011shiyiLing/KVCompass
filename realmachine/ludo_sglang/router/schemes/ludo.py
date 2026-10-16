@@ -405,10 +405,18 @@ class LudoScheme(Scheme):
             except (KeyError, ValueError, TypeError):
                 bad += 1
                 continue
-            if not (0 <= level < len(self.tables)):
+            # Authority levels index config.LUDO_CHUNK_SIZES (the worker
+            # fan-out grid); translate to this lookup's cut-indexed table
+            # list, which is the union of all latency-derived cuts and is
+            # generally larger than the chunk grid.
+            if not (0 <= level < len(config.LUDO_CHUNK_SIZES)):
                 bad += 1
                 continue
-            if self.tables[level].apply_delta(delta):
+            tbl_idx = self._cut_level.get(config.LUDO_CHUNK_SIZES[level])
+            if tbl_idx is None:
+                bad += 1
+                continue
+            if self.tables[tbl_idx].apply_delta(delta):
                 applied += 1
             else:
                 bad += 1

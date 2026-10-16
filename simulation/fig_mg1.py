@@ -10,7 +10,7 @@ Panel logic (single axes):
   3. Load-aware forwarding without caching (globally least-loaded): same
      offered rho, no reuse, so effective utilization equals offered; its
      knee stays at rho = 1 but delays sit far below random splitting.
-  4. Full \sys (score + reuse), offered rho swept PAST 1: reuse shrinks the
+  4. Full KVCompass (score + reuse), offered rho swept PAST 1: reuse shrinks the
      mean residual prefill, so effective utilization is ~0.58x offered and
      the knee moves to offered rho ~ 1/0.58. All curves share the same
      x-axis semantics (offered utilization, no-cache service moments); the
@@ -18,9 +18,9 @@ Panel logic (single axes):
   5. Crossover band: rho*(m) where the model's queueing delay equals the
      prefill saved by an m-token match.
 
-Run:  python3.13 fig_mg1.py            (full)
-      python3.13 fig_mg1.py --plot     (replot from cached results json)
-Output: ../../figures/mg1_queueing.pdf/png + results/fig_mg1.json
+Run:  python3 fig_mg1.py            (full)
+      python3 fig_mg1.py --plot     (replot from cached results json)
+Output: results/mg1_queueing.pdf/png + results/fig_mg1.json
 """
 import json
 import sys
@@ -32,7 +32,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 HERE = Path(__file__).parent
-FIGD = HERE.parent.parent / 'figures'
+FIGD = HERE / 'results'
 CACHE = HERE / 'results' / 'fig_mg1.json'
 
 import simulate as sim
@@ -99,7 +99,7 @@ def run_lb_nocache(wgen, rho, ES):
 
 
 def run_full_sys(wgen, rho, ES):
-    """Full \sys: joint score + reuse."""
+    """Full KVCompass: joint score + reuse."""
     from run_section3 import run_scheme
     rate_rps = rho * NUM_NODES / ES * 1000.0
     recs, nodes = run_scheme('ludo', rate_rps, 'mixed', N_REQ_B, WARM_B,

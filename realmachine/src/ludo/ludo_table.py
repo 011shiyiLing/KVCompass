@@ -83,7 +83,7 @@ if not _HAS_NATIVE:
     import warnings
     warnings.warn(
         "ludo_binding native extension not found. "
-        "Run scripts/build_ludo.sh to compile it. "
+        "Run scripts/setup/build_ludo.sh to compile it. "
         "Falling back to Python dict (same interface, no performance guarantees).",
         stacklevel=2,
     )
@@ -99,6 +99,10 @@ _TIER_MASK: int = 0b11   # mask for one worker's 2-bit slot
 _BITS_PER_WORKER: int = 2
 _MAX_WORKERS_32: int = 16   # uint32 / 2 bits = 16 slots (ludo_binding)
 _MAX_WORKERS_64: int = 32   # uint64 / 2 bits = 32 slots (ludo_binding64)
+# Central-mode authority/dataplane tables (authority_table.py,
+# dataplane_table.py) pack into the uint32 C++ DataPlane value, so their
+# worker cap stays at the 32-bit layout's 16 slots.
+_MAX_WORKERS: int = _MAX_WORKERS_32
 
 
 def chunk_to_key(token_ids: List[int]) -> int:

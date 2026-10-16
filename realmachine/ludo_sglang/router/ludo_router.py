@@ -278,7 +278,7 @@ async def _startup():
         # Central-directory mode: this router is a Lookup; register
         # with the NameServer so authorities can find us, then skip the
         # gossip layer entirely.  Authority pushes arrive on
-        # ``/internal/apply_packed`` (defined later).
+        # ``/internal/apply_delta_batch`` (defined later).
         await _register_as_lookup()
         global _topology_refresh_task
         _topology_refresh_task = asyncio.create_task(_periodic_topology_refresh())
@@ -545,7 +545,7 @@ async def generate(req: dict):
     # itself (see ludo_sglang/worker/tier_notifier.py); the router
     # does NOT write the table here.  The authority will broadcast the
     # resulting (level, key, packed) deltas back to this lookup
-    # asynchronously via /internal/apply_packed.
+    # asynchronously via /internal/apply_delta_batch.
     if config.MAINTENANCE_MODE != "central":
         try:
             from src.ludo.ludo_table import TIER_VRAM
@@ -594,8 +594,8 @@ async def generate(req: dict):
 @app.get("/scheme_stats")
 async def scheme_stats():
     return {
-        "scheme": scheme.stats(),
-        "load":   load_tracker.stats(),
+        "scheme": scheme.stats() if scheme is not None else {},
+        "load":   load_tracker.stats() if load_tracker is not None else {},
         "gossip": gossip_manager.stats() if gossip_manager else {"enabled": False},
     }
 

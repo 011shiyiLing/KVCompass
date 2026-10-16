@@ -1,19 +1,23 @@
 """
-run_section3.py — Generate Figures 1-4 from the Section 3 evaluation.
+run_section3.py — Main driver for the large-scale simulation figures.
 
 Usage:
-    python3 run_section3.py [--quick] [--workload mixed|toolbench|loogle|aaps]
+    python3 run_section3.py [--quick] [--figs 125] [--n-tenants 50]
+                            [--workload mixed|toolbench|loogle|aaps|wildchat|lmsys]
 
 Flags:
     --quick      Use fewer requests / arrival-rate points (fast debug run).
-    --workload   Override workload for Figures 1-2 (default: mixed).
+    --workload   Workload for figs 1/2/5 (default: mixed).
+    --figs       Which figures to generate (default: 1234; see --help).
     --seed       Random seed (default: 42).
 
 Outputs (saved to results/):
     fig1_latency_throughput.pdf   — P99 TTFT vs arrival rate curves
-    fig2_ttft_cdf.pdf             — TTFT CDF at 0.6 × oracle max rate
-    fig3_flops_saved.pdf          — Prefill FLOPs saved per scheme / workload
-    fig4_heatmap.pdf              — Steady-state per-node prefill rate heatmap
+    fig2_ttft_cdf.pdf (+ fig2b/fig2c CDFs and TTFT/E2E box plots)
+    fig3b_cache_hit_rate.pdf      — normalized prefix-cache hit rate per scheme
+                                    (FLOPs-saved stats printed + cached as JSON)
+    fig4_heatmap.pdf              — steady-state per-node load-factor heatmap
+    fig5_throughput.pdf           — closed-loop throughput bar chart
 """
 
 import argparse
@@ -1717,7 +1721,7 @@ def _simulate_fig3(scheme, reqs):
     # Hash-placement schemes now share Ludo's multi-granularity match cap —
     # see top-of-file docstring.  The hit distribution remains structurally
     # lower than Ludo's because each level's owner is determined by an
-    # independent hash (Option A in §2 of 03_evaluation.md).
+    # independent hash.
     HASH_POS  = LUDO_MAX
     RT_POS    = RADIX_GATE_CHUNKS                          # 10  (100 tok)
 
@@ -1783,7 +1787,7 @@ def _simulate_fig3(scheme, reqs):
     vram_hit_frac = 0.0
     dram_hit_frac = 0.0
 
-    # ── Ludo's workload-aware eviction (idea.md §1.3.4) ──────────────────
+    # ── Ludo's workload-aware eviction ────────────────────────────────────
     # Only applied when scheme == 'ludo'.  Each cached block gets a
     # priority score combining workload classification + access-count
     # frequency.  Eviction picks the LOWEST-priority block among a
@@ -2291,6 +2295,14 @@ def run_fig3(args, wgen, oracle_max_rate, ludo_max_rate):
     if cache_path.exists():
         with open(cache_path) as f:
             stats = json.load(f)
+        if not all(s in stats for s in schemes):
+            # Cache written by an older scheme list — regenerate.
+            print(f'  cached stats {cache_path.name} missing schemes; '
+                  're-running fig3')
+            stats = None
+    else:
+        stats = None
+    if stats is not None:
         print(f'  loaded cached stats from {cache_path.name}')
         for s in schemes:
             print(f'    {s:<18s} flops={stats[s]["flops_saved"]:.4f}  '
@@ -2934,11 +2946,10 @@ def main():
     parser.add_argument('--figs',     default='1234',
                         help='Which figures to generate. Digits 1/2/3/4, '
                              "5 for the closed-loop throughput bar chart "
-                             "(SkyWalker-style Tpt), plus optional 'c' for "
-                             "fig3c (effective FLOPs rate) and 'm' for the "
-                             'merged fig1+fig2+fig2b panel (loads from JSON '
-                             'caches; requires fig1 + fig2 to have run at '
-                             "least once). e.g. --figs 12m (default: 1234)")
+                             "(SkyWalker-style Tpt), plus optional 'm' for "
+                             'the merged fig1+fig2+fig2b panel (loads from '
+                             'JSON caches; requires fig1 + fig2 to have run '
+                             "at least once). e.g. --figs 12m (default: 1234)")
     parser.add_argument('--fig1-rates', default='',
                         help='fig1: comma-separated arrival-rate sweep '
                              'override (default: built-in RATES_FULL/'

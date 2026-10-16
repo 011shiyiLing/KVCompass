@@ -6,6 +6,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 OUT="${OUT:-$ROOT/results_tmp/p2_mem.csv}"
 TOKENS="${TOKENS:-$ROOT/results_tmp/p2_tokens.bin}"
+mkdir -p "$(dirname "$OUT")"
 
 g++ -std=c++17 -O3 -march=native -DNDEBUG -ffast-math \
     -Wno-unused-result -Wno-deprecated-declarations \

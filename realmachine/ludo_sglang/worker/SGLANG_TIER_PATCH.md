@@ -1,5 +1,13 @@
 # SGLang HiRadixCache patch — wiring tier notifications
 
+> **Use the automated patcher first.** `scripts/setup/apply_sglang_tier_patch.py`
+> inserts all four hooks into SGLang 0.5.10.post1 automatically
+> (`cache_finished_req` → advertise, `write_backup` → demote,
+> `load_back` → promote, `evict_host` → evict) and is idempotent.
+> This document explains the hook *semantics* so the patch can be
+> ported by hand to other SGLang versions, whose method names may
+> differ from the examples below.
+
 This document tells you where to hook the four KV-cache lifecycle
 events into SGLang's hierarchical RadixCache so the discovery plane
 gets a faithful view of every worker's cache state.

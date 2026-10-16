@@ -17,7 +17,7 @@ Usage
 -----
     python -m ludo_sglang.workload.trace_replayer \\
         --trace traces/mix_500.jsonl \\
-        --router http://127.0.0.1:8000 \\
+        --router http://127.0.0.1:8001 \\
         --rate 4 \\
         --out results/ludo_r4.csv \\
         --warmup 5
@@ -470,7 +470,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--trace",  type=Path, required=True)
-    p.add_argument("--router", type=str,  default="http://127.0.0.1:8000")
+    p.add_argument("--router", type=str,  default="http://127.0.0.1:8001")
     p.add_argument("--rate",   type=float, default=None,
                    help="Target arrival rate (req/s). Required unless "
                         "--closed-loop.")

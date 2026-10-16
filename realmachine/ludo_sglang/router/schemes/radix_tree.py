@@ -83,8 +83,8 @@ class RadixTreeScheme(Scheme):
     # "rarely hits, falls back to least-loaded", which silently buys
     # PlanetServe better load balance than the simulation ever grants
     # it.
-    GATE: int = 10              # 100-token minimum match
-    CHUNK_TOKENS: int = 10      # PlanetServe original
+    GATE: int = config.RADIX_GATE_CHUNKS         # default 10 → 100-token minimum match
+    CHUNK_TOKENS: int = config.RADIX_CHUNK_TOKENS  # PlanetServe original (default 10)
     HASH_MOD: int = 15          # PlanetServe original
     # Phase-2 climb is advanced-mode only and is omitted in basic mode
     # (the simulator's planetserve_route adds it; the published

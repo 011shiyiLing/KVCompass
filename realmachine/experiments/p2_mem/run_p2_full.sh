@@ -18,6 +18,7 @@ if command -v brew >/dev/null 2>&1; then
 fi
 OUT="${OUT:-$ROOT/results_tmp/p2_mem_scale_5090.csv}"
 TOKENS="${TOKENS:-$ROOT/results_tmp/p2_tokens.bin}"
+mkdir -p "$(dirname "$OUT")"
 BIN="$HERE/p2_mem"
 CAP_GB="${CAP_GB:-26}"          # leave headroom on 30 GB
 FASTHASH_FROM=100000000         # use --fast-hash at E >= 1e8
