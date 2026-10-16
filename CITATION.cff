@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use KVCompass in your research, please cite the paper below."
+title: "KVCompass"
+type: software
+authors:
+  - family-names: Ling
+    given-names: Shiyi
+    affiliation: "University of California, Santa Cruz"
+    email: sling9@ucsc.edu
+  - family-names: Fang
+    given-names: Fei
+    affiliation: "University of California, Santa Cruz"
+  - family-names: Qian
+    given-names: Chen
+    affiliation: "University of California, Santa Cruz"
+preferred-citation:
+  type: article
+  title: "KVCompass: A Discovery Plane for Internet-Scale Prefix Cache Sharing in LLM Serving"
+  authors:
+    - family-names: Ling
+      given-names: Shiyi
+    - family-names: Fang
+      given-names: Fei
+    - family-names: Qian
+      given-names: Chen
+  journal: "Proceedings of the ACM on Measurement and Analysis of Computing Systems"
+  volume: 10
+  issue: 3
+  year: 2026
+  month: 12
+  doi: "10.1145/3857371"
