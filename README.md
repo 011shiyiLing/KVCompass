@@ -58,9 +58,12 @@ Each artifact has its own `README.md` with detailed usage.
   Ludo hashing implementation and for every upstream system consulted when
   modeling the baselines.
 
-> **Datasets and models are not shipped.** The simulator's workloads are
-> derived from public releases (ToolBench, APPS, LooGLE, WildChat-1M,
-> LMSYS-Chat-1M) — see [`simulation/datasets/README.md`](simulation/datasets/README.md).
+> **Datasets and models are not shipped in the repository.** The simulator's
+> workloads are derived files we built from public releases (ToolBench, APPS,
+> LooGLE, WildChat-1M, LMSYS-Chat-1M). The three Mixed-workload files are
+> attached to the GitHub release; the two license-gated ones are rebuilt
+> locally with the shipped prep scripts — see
+> [`simulation/datasets/README.md`](simulation/datasets/README.md).
 > The real-machine prototype serves stock Hugging Face models through SGLang;
 > no model weights are bundled.
 
